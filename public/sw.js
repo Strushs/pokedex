@@ -74,11 +74,10 @@ self.addEventListener("fetch", (event) => {
             return cachedResponse;
           }
 
-          // W ostateczności zwróć twardo zahardkodowany kod HTML
-          return new Response(
-            "<!DOCTYPE html><html lang='pl'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'><title>Jesteś Offline</title><style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;background:#f7f7f7}</style></head><body><h1>Brak połączenia</h1><p>Masz wyłączony internet. Zawartość zapisana w pamięci podręcznej nie zawiera tej strony.</p></body></html>",
-            { headers: { "Content-Type": "text/html" } },
-          );
+          return new Response("Offline page not found in cache.", {
+            status: 404,
+            headers: { "Content-Type": "text/plain" },
+          });
         }
       })(),
     );
