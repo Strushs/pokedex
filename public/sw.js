@@ -13,10 +13,10 @@ Copyright 2015, 2019 Google Inc. All Rights Reserved.
 
 // Incrementing OFFLINE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
-const OFFLINE_VERSION = 1;
+const OFFLINE_VERSION = 3;
 const CACHE_NAME = "offline";
 // Customize this with a different URL if needed.
-const OFFLINE_URL = "offline.html";
+const OFFLINE_URL = "/offline.html";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -46,9 +46,13 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  // We only want to call event.respondWith() if this is a navigation request
-  // for an HTML page.
-  if (event.request.mode === "navigate") {
+  // Catch navigation requests (and manual typing in URL bar)
+  // Also catch empty modes/accept html which Next.js might use occasionally
+  if (
+    event.request.mode === "navigate" ||
+    (event.request.method === "GET" &&
+      event.request.headers.get("accept")?.includes("text/html"))
+  ) {
     event.respondWith(
       (async () => {
         try {
@@ -61,23 +65,22 @@ self.addEventListener("fetch", (event) => {
           const networkResponse = await fetch(event.request);
           return networkResponse;
         } catch (error) {
-          // catch is only triggered if an exception is thrown, which is likely
-          // due to a network error.
-          // If fetch() returns a valid HTTP response with a response code in
-          // the 4xx or 5xx range, the catch() will NOT be called.
           console.log("Fetch failed; returning offline page instead.", error);
 
           const cache = await caches.open(CACHE_NAME);
           const cachedResponse = await cache.match(OFFLINE_URL);
-          return cachedResponse;
+
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+
+          // W ostateczności zwróć twardo zahardkodowany kod HTML
+          return new Response(
+            "<!DOCTYPE html><html lang='pl'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'><title>Jesteś Offline</title><style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;background:#f7f7f7}</style></head><body><h1>Brak połączenia</h1><p>Masz wyłączony internet. Zawartość zapisana w pamięci podręcznej nie zawiera tej strony.</p></body></html>",
+            { headers: { "Content-Type": "text/html" } },
+          );
         }
       })(),
     );
   }
-
-  // If our if() condition is false, then this fetch handler won't intercept the
-  // request. If there are any other fetch handlers registered, they will get a
-  // chance to call event.respondWith(). If no fetch handlers call
-  // event.respondWith(), the request will be handled by the browser as if there
-  // were no service worker involvement.
 });
