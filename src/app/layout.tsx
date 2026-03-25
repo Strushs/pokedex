@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   title: "Pokedex App",
   description: "Zaliczenie Pokedex App - PWA",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
