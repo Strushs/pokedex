@@ -32,7 +32,7 @@ export default function PokedexPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-16">
-      <header className="bg-red-600 shadow-lg border-b-8 border-gray-900 border-opacity-20 sticky top-0 z-10 w-full rounded-b-xl">
+      <header className="bg-red-600 shadow-lg border-b-8 border-gray-900 border-opacity-20 top-0 z-10 w-full rounded-b-xl z-index-100">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-white rounded-full border-4 border-gray-800 flex items-center justify-center shadow-inner">
@@ -71,7 +71,7 @@ export default function PokedexPage() {
                     <img
                       src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
                       alt={pokemon.name}
-                      className="w-40 h-40 drop-shadow-2xl group-hover:scale-125 group-hover:-translate-y-6 transition-transform duration-500 ease-out"
+                      className="w-40 h-40 drop-shadow-2xl group-hover:scale-125 group-hover:-translate-y-6 transition-transform duration-100 ease-out"
                     />
                   </div>
                   <div className="p-5 text-center bg-gray-50 rounded-b-3xl -mt-6 pt-10">
