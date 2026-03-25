@@ -55,7 +55,7 @@ npm run dev
 http://localhost:3000
 ```
 
-## 🎨 Wykorzystana Paleta Technologii Full-Stack
+## Wykorzystana Paleta Technologii Full-Stack
 
 - **React 19 & Next.js 16 (App Router)**
 - **Środowisko Node.js**
