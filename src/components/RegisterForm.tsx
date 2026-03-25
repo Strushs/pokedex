@@ -98,7 +98,6 @@ export default function RegisterForm() {
             value={form.username}
             onChange={handleChange}
             className="mt-1 block w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg text-gray-900 focus:bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all shadow-inner"
-            placeholder="Ash Ketchum"
           />
           {errors.username && (
             <p className="text-red-500 text-xs font-semibold mt-1">
